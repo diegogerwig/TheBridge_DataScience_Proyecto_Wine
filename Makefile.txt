@@ -1,0 +1,61 @@
+# Makefile para el Proyecto de Clasificación de Vinos
+
+# Variables
+PYTHON = python3
+PIP = pip
+STREAMLIT = streamlit
+UVICORN = uvicorn
+DOCKER = docker
+APP_NAME = wine-classifier
+PORT = 80
+
+# Comandos de Python
+install:
+	$(PIP) install -r requirements.txt
+
+# Comandos de ejecución
+run-visualization:
+	$(PYTHON) visualize_wine_data.py
+
+run-streamlit:
+	$(STREAMLIT) run streamlit_wine_app.py
+
+run-api:
+	$(UVICORN) fastapi_wine_api:app --reload
+
+# Comandos de Docker
+docker-build:
+	$(DOCKER) build -t $(APP_NAME) .
+
+docker-run:
+	$(DOCKER) run -d -p $(PORT):$(PORT) $(APP_NAME)
+
+docker-stop:
+	$(DOCKER) stop $$($(DOCKER) ps -q --filter ancestor=$(APP_NAME))
+
+docker-clean: docker-stop
+	$(DOCKER) rm $$($(DOCKER) ps -a -q --filter ancestor=$(APP_NAME))
+	$(DOCKER) rmi $(APP_NAME)
+
+# Comandos de limpieza
+clean:
+	find . -type f -name '*.pyc' -delete
+	find . -type d -name '__pycache__' -delete
+
+# Comando para ejecutar tests (asumiendo que tienes tests)
+test:
+	$(PYTHON) -m pytest tests/
+
+# Comando para verificar el estilo del código
+lint:
+	flake8 .
+
+# Comando para formatear el código
+format:
+	black .
+
+# Comando para generar documentación (asumiendo que usas Sphinx)
+docs:
+	cd docs && make html
+
+.PHONY: install run-visualization run-streamlit run-api docker-build docker-run docker-stop docker-clean clean test lint format docs
