@@ -11,31 +11,30 @@ PORT = 80
 
 # Comandos de Python
 install:
-	$(PIP) install -r requirements.txt
+	pip install -r requirements.txt
 
-# Comandos de ejecución
-run-visualization:
-	$(PYTHON) visualize_wine_data.py
+run-visual:
+	python3 wine_dataset_script.py
 
 run-streamlit:
-	$(STREAMLIT) run streamlit_wine_app.py
+	streamlit run streamlit_wine_app.py
 
 run-api:
-	$(UVICORN) fastapi_wine_api:app --reload
+	uvicorn fastapi_wine_api:app --reload
 
 # Comandos de Docker
 docker-build:
-	$(DOCKER) build -t $(APP_NAME) .
+	docker build -t $(APP_NAME) .
 
 docker-run:
-	$(DOCKER) run -d -p $(PORT):$(PORT) $(APP_NAME)
+	docker run -d -p 80:$(PORT)80 $(APP_NAME)
 
 docker-stop:
-	$(DOCKER) stop $$($(DOCKER) ps -q --filter ancestor=$(APP_NAME))
+	docker stop $$(docker ps -q --filter ancestor=$(APP_NAME))
 
 docker-clean: docker-stop
-	$(DOCKER) rm $$($(DOCKER) ps -a -q --filter ancestor=$(APP_NAME))
-	$(DOCKER) rmi $(APP_NAME)
+	docker rm $$(docker ps -a -q --filter ancestor=$(APP_NAME))
+	docker rmi $(APP_NAME)
 
 # Comandos de limpieza
 clean:
@@ -44,7 +43,7 @@ clean:
 
 # Comando para ejecutar tests (asumiendo que tienes tests)
 test:
-	$(PYTHON) -m pytest tests/
+	python3 -m pytest tests/
 
 # Comando para verificar el estilo del código
 lint:
@@ -57,5 +56,7 @@ format:
 # Comando para generar documentación (asumiendo que usas Sphinx)
 docs:
 	cd docs && make html
+
+run: run-visual run-streamlit run-api
 
 .PHONY: install run-visualization run-streamlit run-api docker-build docker-run docker-stop docker-clean clean test lint format docs

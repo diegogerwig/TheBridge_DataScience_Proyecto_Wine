@@ -8,6 +8,9 @@ wine = load_wine()
 df = pd.DataFrame(wine.data, columns=wine.feature_names)
 df['target'] = wine.target
 
+# Guardar el dataset en un archivo CSV
+df.to_csv('wine_dataset.csv', index=False)
+
 # Mostrar las primeras filas del dataset
 print(df.head())
 
