@@ -1,4 +1,4 @@
-APP_NAME = wine-classifier
+APP_NAME = wine_classifier
 
 
 req:
@@ -11,20 +11,10 @@ run-streamlit:
 	streamlit run ./src/streamlit_wine_app.py
 
 run-api:
-	uvicorn fastapi_wine_api:app --reload
+	uvicorn app.main:app --reload
 
-docker-build:
-	docker build -t $(APP_NAME) .
-
-docker-run:
-	docker run -d -p 80:80 $(APP_NAME)
-
-docker-stop:
-	docker stop $$(docker ps -q --filter ancestor=$(APP_NAME))
-
-docker-clean: docker-stop
-	docker rm $$(docker ps -a -q --filter ancestor=$(APP_NAME))
-	docker rmi $(APP_NAME)
+test-api:
+	python3 -m pytest ./app/tests/test.py --disable-warnings
 
 clean:
 	find . -type f -name '*.pyc' -delete
@@ -33,15 +23,6 @@ clean:
 test:
 	python3 -m pytest tests/
 
-lint:
-	flake8 .
-
-format:
-	black .
-
-docs:
-	cd docs && make html
-
 run: run-visual run-streamlit run-api
 
-.PHONY: req run-visual run-streamlit run-api docker-build docker-run docker-stop docker-clean clean test lint format docs run
+.PHONY: req run-visual run-streamlit run-api test-api clean test run
