@@ -2,6 +2,8 @@
 
 Este proyecto implementa un clasificador de vinos utilizando el dataset de Vinos de scikit-learn. Incluye scripts para visualización de datos, una aplicación web interactiva con Streamlit y una API REST con FastAPI.
 
+https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_wine.html
+
 ## Contenido del Proyecto
 
 1. Script de visualización de datos
