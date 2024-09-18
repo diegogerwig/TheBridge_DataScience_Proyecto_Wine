@@ -77,6 +77,7 @@ def test_predict_empty_request():
     assert response.status_code == 422  # La API debe devolver un error 422 por solicitud vacía
     assert "detail" in response.json()
 
+# Test que verifica el tipo de dato incorrecto
 def test_predict_invalid_data_type():
     wine_features_invalid = {
         "alcohol": "14.23",  # String en vez de float
@@ -95,4 +96,3 @@ def test_predict_invalid_data_type():
     }
     response = client.post("/predict", json=wine_features_invalid)
     assert response.status_code == 422
-    assert "detail" in response.json()

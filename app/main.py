@@ -5,19 +5,19 @@ app = FastAPI()
 
 # Definición del modelo con validaciones
 class WineFeatures(BaseModel):
-    alcohol: confloat(gt=0)  # float mayor que 0
-    malic_acid: confloat(gt=0)
-    ash: confloat(gt=0)
-    alcalinity_of_ash: confloat(gt=0)
-    magnesium: conint(gt=0)  # entero mayor que 0
-    total_phenols: confloat(gt=0)
-    flavanoids: confloat(gt=0)
-    nonflavanoid_phenols: confloat(gt=0)
-    proanthocyanins: confloat(gt=0)
-    color_intensity: confloat(gt=0)
-    hue: confloat(gt=0)
-    od280_od315_of_diluted_wines: confloat(gt=0)
-    proline: conint(gt=0)
+    alcohol: confloat(ge=0) 
+    malic_acid: confloat(ge=0)
+    ash: confloat(ge=0)
+    alcalinity_of_ash: confloat(ge=0)
+    magnesium: conint(ge=0)  # entero mayor que 0
+    total_phenols: confloat(ge=0)
+    flavanoids: confloat(ge=0)
+    nonflavanoid_phenols: confloat(ge=0)
+    proanthocyanins: confloat(ge=0)
+    color_intensity: confloat(ge=0)
+    hue: confloat(ge=0)
+    od280_od315_of_diluted_wines: confloat(ge=0)
+    proline: conint(ge=0)
 
 
 @app.post("/predict")
