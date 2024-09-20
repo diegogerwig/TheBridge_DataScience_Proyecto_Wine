@@ -69,6 +69,12 @@ for feature in wine.feature_names:
         float(X[feature].mean())
     )
 
+wine_class_names = {
+    0: "VINO TINTO",
+    1: "VINO ROSADO",
+    2: "VINO BLANCO"
+}
+
 # Botón para clasificar el vino
 if st.button('Clasificar Vino'):
     input_data = np.array(list(feature_input.values())).reshape(1, -1)
@@ -76,11 +82,12 @@ if st.button('Clasificar Vino'):
     prediction = model.predict(input_data_scaled)
     probabilities = model.predict_proba(input_data_scaled)[0]
     
-    st.write(f'El vino clasificado pertenece a la clase: {wine.target_names[prediction[0]]}')
+    predicted_wine = wine_class_names[prediction[0]]
+    st.write(f'El vino clasificado es: {predicted_wine}')
     
     st.subheader("Probabilidades de cada clase:")
-    for class_name, prob in zip(wine.target_names, probabilities):
-        st.write(f"{class_name}: {prob:.4f}")
+    for i, (class_name, prob) in enumerate(zip(wine.target_names, probabilities)):
+        st.write(f"{wine_class_names[i]}: {prob:.4f}")
 
 # Importancia de las características
 st.subheader('Importancia de las Características')
