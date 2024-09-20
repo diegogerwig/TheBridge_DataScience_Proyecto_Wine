@@ -16,13 +16,6 @@ run-api:
 test-api:
 	python3 -m pytest ./app/tests/test.py --disable-warnings
 
-clean:
-	find . -type f -name '*.pyc' -delete
-	find . -type d -name '__pycache__' -delete
-
-test:
-	python3 -m pytest tests/
-
 run: run-visual run-streamlit run-api
 
 .PHONY: req run-visual run-streamlit run-api test-api clean test run
