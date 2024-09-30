@@ -5,3 +5,5 @@ pandas
 numpy
 pytest
 httpx
+joblib 
+pydantic

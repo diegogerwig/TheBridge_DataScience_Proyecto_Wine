@@ -4,31 +4,14 @@ from pydantic import BaseModel
 import joblib
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.datasets import load_wine
-import os
 
 app = FastAPI()
 
-current_dir = os.path.dirname(os.path.realpath(__file__))
-
 # Cargar el modelo entrenado
-model_path = os.path.join(current_dir, '../model', 'model.pkl')
-model = joblib.load(model_path)
+model = joblib.load('./model/model.pkl')
 
-# Intentar cargar el scaler, si no existe, crear uno nuevo
-scaler_path = os.path.join(current_dir, 'model', 'scaler.pkl')
-
-# Cargar el scaler (asumiendo que lo guardaste
-try:
-    scaler = joblib.load('./model/scaler.pkl')
-except FileNotFoundError:
-    # Si el scaler no existe, creamos uno nuevo y lo ajustamos con los datos originales
-    wine = load_wine()
-    X = wine.data
-    scaler = StandardScaler()
-    scaler.fit(X)
-    # Guardar el scaler para futuros usos
-    joblib.dump(scaler, './model/scaler.pkl')
+# Cargar el scaler (asumiendo que lo guardaste)
+scaler = joblib.load('./model/scaler.pkl')
 
 class WineFeatures(BaseModel):
     alcohol: float
@@ -83,4 +66,4 @@ async def predict_wine(features: WineFeatures):
 
 @app.get("/")
 async def root():
-    return {"message": "Bienvenido al clasificador de vinos API de DIEGO GERWIG"}
+    return {"message": "Bienvenido al clasificador de vinos API"}
